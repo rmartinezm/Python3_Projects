@@ -1,83 +1,143 @@
 import abc
 
-class Nodo(object):
+class Node(object):
 
 	'''
-	Metodo constructor que recibe el elemento que guardara nuestro Nodo
+		Metodo constructor que recibe el elemento que guardara nuestro Nodo
 	'''
-	def __init__(self, elemento):
-		self.elemento = elemento
-		self.padre = None
-		self.hijo_izquierdo = None
-		self.hijo_derecho = None
+	def __init__(self, element):
+		self.element = element
+		self.parent = None
+		self.left_child = None
+		self.right_child = None
 
-	def get_elemento(self):
-		return self.elemento
+	'''
+		@return 
+			El elemento que contiene nuestro nodo
+	'''
+	def get_element(self):
+		return self.element
 
-	def get_padre(self):
-		return self.padre
+	'''
+		@return 
+			El padre de nuestro nodo
+	'''
+	def get_parent(self):
+		return self.parent
 
-	def set_padre(self, nodo):
-		self.padre = nodo
+	'''
+		@param node
+			Nodo que asignaremos como padre
+	'''
+	def set_parent(self, node):
+		self.parent = node
 
-	def get_hijo_izq(self):
-		return self.hijo_izquierdo
+	'''
+		@return 
+			El hijo izquierdo de nuestro nodo
+	'''
+	def get_left_child(self):
+		return self.left_child
 
-	def set_hijo_izq(self, nodo):
-		self.hijo_izquierdo = nodo
-		nodo.padre = self
+	'''
+		@param node
+			Nodo que asignaremos como hijo izquierdo
+	'''
+	def set_left_child(self, node):
+		self.left_child = node
+		node.parent = self
 
-	def get_hijo_der(self):
-		return self.hijo_derecho
+	'''
+		@return
+			El hijo derecho de nuestro nodo
+	'''
+	def get_right_child(self):
+		return self.right_child
 
-	def set_hijo_der(self, nodo):
-		self.hijo_derecho = nodo
-		nodo.padre = self
+	'''
+		@param node
+			Nodo que asignaremos como hijo derecho
+	'''
+	def set_right_child(self, node):
+		self.right_child = node
+		node.parent = self
 
-	def tengo_hijo_izq(self):
-		return self.hijo_izquierdo != None
+	'''
+		@return 
+			True si el hijo izquierdo es distinto de None
+			False en otro caso
+	'''
+	def have_left_child(self):
+		return self.left_child != None
 
-	def tengo_hijo_der(self):
-		return self.hijo_derecho != None
+	'''
+		@return 
+			True si el hijo derecho es distinto de None
+			False en otro caso
+	'''
+	def have_right_child(self):
+		return self.right_child != None
 
+	'''
+		@return
+			Representacion en forma de cadena de nuestro nodo
+	'''
 	def __str__(self):
-		return str(self.elemento)
+		return "( " + str(self.element) + " )"
 
 
 
-class ArbolBinario(object):
+class BinaryTree(object):
 
 	__metaclass__ = abc.ABCMeta
 
+	'''
+		Metodo constructor que inicializa el arbol con la raiz None 
+		y el tamanio en 0
+	'''
 	def __init__(self):
-		self.raiz = None
-		self.tamanio = 0
+		self.root = None
+		self.size = 0
 
+	'''
+		Metodo abstracto que nos indicara como agregar elementos al arbol
+	'''
 	@abc.abstractmethod
-	def agrega(self, elemento):
+	def add(self, element):
 		'''
-		Metodo que nos indica como tenemos que agregar un elemento a nuestro
-		arbol binario
+		Metodo que nos indicara como agregar un elemento al arbol
 		'''
-		return 
+		raise BaseException("Method not implemented")
 
+	'''
+		Metodo que nos indica como eliminaremos a un elemento del arbol
+	'''
 	@abc.abstractmethod
-	def elimina(self, elemento):
+	def delete(self, element):		
 		'''
-		Metodo que nos indica como tenemos que eliminar a un elemento a nuestro
-		arbol binario
+			Metodo que nos indica como eliminaremos a un elemento del arbol
 		'''
-		return 
+		raise BaseException("Method not implemented")
 
-	def nuevo_nodo(self, elemento):
-		return Nodo(elemento)
+	'''
+		Metodo que creara un tipo especifico de nodo dependiendo de lo que necesite
+		el arbol
+	'''
+	def new_node(self, element):
+		return Node(element)
 
-	def get_tamanio(self):
-		return self.tamanio
+	'''
+		@return
+			El tamanio de nuestro arbol
+	'''
+	def get_size(self):
+		return self.size
 
-	def estoy_vacio(self):
-		return self.tamanio == 0
+	'''
+		@return
+			True si el arbol esta vacio
+			False en otro caso
+	'''
+	def is_empty(self):
+		return self.size == 0
 
-
-
-		

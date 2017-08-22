@@ -1,14 +1,15 @@
-from arbol_binario_completo import ArbolBinarioCompleto
+from complete_binary_tree import CompleteBinaryTree
 
 if __name__ == '__main__':
 
-	arbol = ArbolBinarioCompleto()
-	arbol.agrega("Hola")
-	arbol.agrega("Mundo")
-	arbol.agrega("Desde")
-	arbol.agrega("Python3")
+	tree = CompleteBinaryTree()
+	
+	for x in range(20):
+		tree.add(x)
 
-	for nodo in arbol:
-		print(nodo)
-	for nodo in arbol:
-		print(nodo)
+	for node in tree:
+		print(node)
+
+	print(tree.get_size())
+
+
