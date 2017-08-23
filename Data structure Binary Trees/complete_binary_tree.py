@@ -41,7 +41,19 @@ class CompleteBinaryTree(BinaryTree):
 		Metodo que nos indica como eliminar un elemento al arbol
 	'''
 	def delete(self, element):
-		return
+		node_element = __search(element)
+		if (node_element == None):
+			raise Exception("Element not found")
+		last_node = __get_last_node()
+		node_element.set_element(last_node.get_element())
+		self.__delete_last_node()
+
+	def __delete_last_node(self):
+		node = self.__get_last_node()
+		if (node.get_parent() == None):
+			self.clear()
+		else:
+			node.get_parent().(set_left_child(None) if node.im_left_child() else set_right_child(None))
 
 	'''
 		@return

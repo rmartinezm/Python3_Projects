@@ -19,6 +19,13 @@ class Node(object):
 		return self.element
 
 	'''
+		@param element
+			Elemento que queremos almacenar en nuestro nodo
+	'''
+	def set_element(self, elemet):
+		self.elemet = elemet
+
+	'''
 		@return 
 			El padre de nuestro nodo
 	'''
