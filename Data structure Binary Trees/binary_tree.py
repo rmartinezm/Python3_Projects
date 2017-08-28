@@ -108,23 +108,31 @@ class BinaryTree(object):
 
 	'''
 		Metodo abstracto que nos indicara como agregar elementos al arbol
+		@raise MethodNotImplement
+			Si el metodo no ha sido implementado
 	'''
 	@abc.abstractmethod
 	def add(self, element):
 		'''
 		Metodo que nos indicara como agregar un elemento al arbol
 		'''
-		raise BaseException("Method not implemented")
+		raise MethodNotImplement()
 
 	'''
 		Metodo que nos indica como eliminaremos a un elemento del arbol
+		@param element
+			Elemento que eliminaremos del arbol
+		@raise ElementNotFound
+			Si el elemento no esta en el arbol
+		@raise MethodNotImplement
+			Si el metodo no ha sido implementado
 	'''
 	@abc.abstractmethod
 	def delete(self, element):		
 		'''
 			Metodo que nos indica como eliminaremos a un elemento del arbol
 		'''
-		raise BaseException("Method not implemented")
+		raise MethodNotImplement()
 
 	'''
 		Metodo que creara un tipo especifico de nodo dependiendo de lo que necesite
@@ -147,4 +155,8 @@ class BinaryTree(object):
 	'''
 	def is_empty(self):
 		return self.size == 0
+
+class ElementNotFound(Exception): pass
+
+class MethodNotImplement(Exception): pass
 

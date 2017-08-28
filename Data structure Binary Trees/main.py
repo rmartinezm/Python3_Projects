@@ -1,15 +1,10 @@
 from complete_binary_tree import CompleteBinaryTree
+from binary_tree import BinaryTree
 
 if __name__ == '__main__':
 
-	tree = CompleteBinaryTree()
+	tree = BinaryTree()
 	
-	for x in range(20):
-		tree.add(x)
-
-	for node in tree:
-		print(node)
-
-	print(tree.get_size())
+	tree.add("Hi")
 
 

@@ -18,5 +18,5 @@ class Comparable(object):
 			0 si nuestro objeto es igual que el objeto other.
 			un numero menor que 0 si nuestro objeto es menor que el objeto other.
 		'''
-		return
+		raise BaseException("Method not implemented")
 
