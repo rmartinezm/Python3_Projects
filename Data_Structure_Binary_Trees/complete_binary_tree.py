@@ -4,7 +4,7 @@ from binary_tree import *
 	@author
 		Roberto Martínez Medina
 	@github
-		https://github.com/rmartinezm/Python3_Projects/blob/master/Data%20structure%20Binary%20Trees/complete_binary_tree.py
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Data_Structure_Binary_Trees/complete_binary_tree.py
 """
 
 '''
@@ -97,7 +97,7 @@ class CompleteBinaryTree(BinaryTree):
 	def __delete_last_node(self):
 		node = self.__get_last_node()
 		if (node.get_parent() == None):
-			self.clear()
+			self.root = None
 		else:
 			if (node.im_left_child()):
 				node.get_parent().set_left_child(None)
