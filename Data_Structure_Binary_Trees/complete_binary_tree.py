@@ -1,7 +1,18 @@
 from binary_tree import *
 
-# from binary_tree import Node 
+"""
+	@author
+		Roberto Martínez Medina
+	@github
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Data%20structure%20Binary%20Trees/complete_binary_tree.py
+"""
 
+'''
+	Arbol Binario Completo
+    Un árbol binario completo es un árbol binario de profundidad K que tiene todos los nodos posibles hasta
+    el penúltimo nivel (profundidad K-1), y donde los elementos del último nivel están colocados de izquierda
+    a derecha sin dejar huecos entre ellos.
+'''
 class CompleteBinaryTree(BinaryTree):
 
 	'''
@@ -13,9 +24,9 @@ class CompleteBinaryTree(BinaryTree):
 
 	
 	'''
-		Metodo que nos indica como agregar un elemento al arbol
+		Metodo que agrega un elemento al arbol
 		@param element
-			el Elemento que agregaremos al arbol
+			El elemento que agregaremos al arbol
 	'''
 	def add(self, element):
 		node = self.new_node(element)
@@ -46,21 +57,39 @@ class CompleteBinaryTree(BinaryTree):
 			self.__add(list_aux, node)
 
 	'''
-		Metodo que nos indica como eliminar un elemento al arbol
+		Metodo que elimina un elemento del arbol
 		@param element
 			El elemento que eliminaremos del arbol
 		@raise ElementNotFound
-			Si el elemento no esta en el arbol
+			Si el elemento no se encuentra en el arbol
 		@raise MethodNotImplement
-			Si el metodo no ha sido implementado
+			Si el metodo aun no ha sido implementado
 	'''
 	def delete(self, element):
-		node_element = __search(element)
+		node_element = self.__search(element)
 		if (node_element == None):
 			raise ElementNotFound()
-		last_node = __get_last_node()
+
+		last_node = self.__get_last_node()
+
 		node_element.set_element(last_node.get_element())
+
 		self.__delete_last_node()
+		self.size -= 1
+
+	'''
+		Metodo privado auxiliar que es utilizado para buscar un nodo en el arbol
+		@return 
+			El nodo si esta en el arbol
+			None en otro caso
+	'''
+	def __search(self, element):
+		for node in self:
+			if (node.get_element() == element):
+				self.list_to_iterable = []
+				return node
+		return None
+
 
 	'''
 		Metodo privado auxiliar que es utilizado para eliminar el ultimo nodo del arbol
@@ -69,8 +98,26 @@ class CompleteBinaryTree(BinaryTree):
 		node = self.__get_last_node()
 		if (node.get_parent() == None):
 			self.clear()
-		else: pass
-			#node.get_parent().(set_left_child(None) if node.im_left_child() else set_right_child(None))
+		else:
+			if (node.im_left_child()):
+				node.get_parent().set_left_child(None)
+			else:
+				node.get_parent().set_right_child(None)
+
+	'''
+		Metodo privado auxiliar que es utilizado para devolver el ultimo nodo del arbol
+		@return
+			El ultimo nodo del arbol 
+	'''
+	def __get_last_node(self):
+		n = 0
+		if (self.size == 0):
+			return None
+		for node in self:
+			n += 1
+			if (n == self.size):
+				return node
+
 
 	'''
 		Metodo que regresa un iterable del arbol

@@ -1,6 +1,8 @@
 '''
-	@author Roberto Martínez Medina
-	@github https://github.com/rmartinezm
+	@author 
+		Roberto Martínez Medina
+	@github 
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica02/first_program.py
 
 	Escribe funciones que permitan convertir numeros:
 		* De decimal a octal y de octal a decimal
