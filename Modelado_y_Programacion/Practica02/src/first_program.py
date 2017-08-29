@@ -11,6 +11,15 @@
 
 import math
 
+'''
+	Convierte un numero del sistema octal al sistema decimal
+	@param num_octal
+		Numero del sistema octal que convertiremos a numero del sistema decimal
+	@raise NumberException
+		Si num_octal no es un numero del sistema octal
+	@return
+		La representacion de num_octal en el sistema decimal
+'''
 def octal_to_decimal(num_octal):
 	n = 0
 	num_decimal = 0
@@ -41,6 +50,13 @@ def octal_to_decimal(num_octal):
 	return num_decimal * (-1) if is_negative else num_decimal
 
 
+'''
+	Convierte un numero del sistema decimal al sistema octal
+	@param num_decimal
+		Numero del sistema decimal que convertiremos a numero del sistema octal
+	@return
+		La representacion de num_decimal en el sistema octal	
+'''
 def decimal_to_octal(num_decimal):
 	is_negative = num_decimal < 0
 	r_binary = decimal_to_binary(math.fabs(num_decimal))[::-1]
@@ -77,6 +93,13 @@ def octal_to_hexadecimal(num_octal):
 def hexadecimal_to_octal(num_hexadecimal):
 	pass
 
+'''
+	Convierte un numero del sistema decimal al sistema binario
+	@param num_decimal
+		Numero del sistema decimal que convertiremos a numero del sistema binario
+	@return
+		La representacion de num_decimal en el sistema binario
+'''
 def decimal_to_binary(num_decimal):
 	binary = ""
 	
@@ -91,7 +114,10 @@ def decimal_to_binary(num_decimal):
 
 	return binary[::-1]
 
-
+'''
+	Excepcion que se utiliza para identificar los numeros que no corresponden al sistema
+	deseado
+'''
 class NumberException(Exception): pass
 
 
