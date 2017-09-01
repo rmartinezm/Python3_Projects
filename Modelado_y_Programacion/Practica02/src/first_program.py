@@ -87,8 +87,47 @@ def decimal_to_octal(num_decimal):
 
 
 
+'''
+	Convierte un numero del sistema octal al sistema hexadecimal
+	@param num_octal
+		Numero del sistema octal que convertiremos a numero del sistema hexadecimal
+	@return
+		La representacion de num_octal en el sistema hexadecimal	
+'''
 def octal_to_hexadecimal(num_octal):
-	pass
+	num_binary  = decimal_to_binary(octal_to_decimal(num_octal))[::-1]
+	num_hexadecimal = ""
+
+	aList = ["A", "B", "C", "D", "E", "F"]
+	aux_list = []
+
+	for number in num_binary:
+		if (len(aux_list) == 4):
+			hexadecimal = int(aux_list[0]) * 8
+			hexadecimal += int(aux_list[1]) * 4
+			hexadecimal += int(aux_list[2]) * 2
+			hexadecimal += int(aux_list[3]) * 1
+			if (hexadecimal < 10):
+				num_hexadecimal = str(hexadecimal) + num_hexadecimal
+			else:
+				num_hexadecimal = aList[hexadecimal-10] + num_hexadecimal
+			aux_list = [number]
+		else:
+			aux_list.insert(0, number)
+
+	if(aux_list != []):
+		while len(aux_list) != 4:
+			aux_list.insert(0, "0")
+		hexadecimal = int(aux_list[0]) * 8
+		hexadecimal += int(aux_list[1]) * 4
+		hexadecimal += int(aux_list[2]) * 2
+		hexadecimal += int(aux_list[3]) * 1
+		if (hexadecimal < 10):
+			num_hexadecimal = str(hexadecimal) + num_hexadecimal
+		else:
+			num_hexadecimal = aList[hexadecimal-10] + num_hexadecimal
+	return num_hexadecimal
+
 
 def hexadecimal_to_octal(num_hexadecimal):
 	pass
@@ -155,7 +194,13 @@ if __name__ == '__main__':
 				print("Invalid param, try again")
 
 		elif (option == 3):
-			pass
+			try:
+				param = input("Tell me a number to convert: ")
+				num_hexadecimal = octal_to_hexadecimal(int(param))
+				print(param + " in the hexadecimal system is: " + num_hexadecimal)
+			except:
+				print("Invalid param, try again")
+
 		elif (option == 4):
 			pass
 		elif (option == 0):
