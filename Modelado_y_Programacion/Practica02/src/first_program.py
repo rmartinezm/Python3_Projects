@@ -9,8 +9,6 @@
 	 	* De octal a hexadecimal y hexadecimal a octal
 '''
 
-import math
-
 '''
 	Convierte un numero del sistema octal al sistema decimal
 	@param num_octal
@@ -23,14 +21,8 @@ import math
 def octal_to_decimal(num_octal):
 	n = 0
 	num_decimal = 0
-	is_negative = float(num_octal) < 0
 
-	sOctal = str(math.fabs(float(num_octal)))
-
-	aList = sOctal.split(".")
-
-	sOctal = aList[0][::-1]
-	decimal_part = aList[1]
+	sOctal = str(num_octal)[::-1]
 
 	for number in sOctal:
 		if (int(number) > 7):
@@ -39,15 +31,7 @@ def octal_to_decimal(num_octal):
 		num_decimal += int(number) * (8 ** n)
 		n += 1
 
-	n = -1
-	for number in decimal_part:
-		if (int(number) > 7):
-			raise NumberException()
-
-		num_decimal += int(number) * (8 ** n)
-		n -= 1
-
-	return num_decimal * (-1) if is_negative else num_decimal
+	return num_decimal
 
 
 '''
@@ -58,33 +42,10 @@ def octal_to_decimal(num_octal):
 		La representacion de num_decimal en el sistema octal	
 '''
 def decimal_to_octal(num_decimal):
-	is_negative = num_decimal < 0
-	r_binary = decimal_to_binary(math.fabs(num_decimal))[::-1]
+	binary = decimal_to_binary(num_decimal)
+	octal_number = binary_to_octal(binary)
 
-	octal_number = ""
-
-	aux_list = []
-
-	for number in r_binary:
-		if (len(aux_list) == 3):
-			octal = int(aux_list[0]) * 4
-			octal += int(aux_list[1]) * 2
-			octal += int(aux_list[2]) * 1
-			octal_number = str(octal) + octal_number
-			aux_list = [number]
-		else:
-			aux_list.insert(0, number)
-
-	if(aux_list != []):
-		while len(aux_list) != 3:
-			aux_list.insert(0, "0")
-		octal = int(aux_list[0]) * 4
-		octal += int(aux_list[1]) * 2
-		octal += int(aux_list[2]) * 1
-		octal_number = str(octal) + octal_number
-
-	return int(octal_number) * -1 if is_negative else int(octal_number)
-
+	return octal_number
 
 
 '''
@@ -129,8 +90,20 @@ def octal_to_hexadecimal(num_octal):
 	return num_hexadecimal
 
 
+'''
+	Convierte un numero del sistema hexadecimal al sistema octal
+	@param num_hexadecimal
+		Numero del sistema hexadecimal que convertiremos a numero del sistema octal
+	@return
+		La representacion de num_hexadecimal en el sistema octal	
+'''
 def hexadecimal_to_octal(num_hexadecimal):
-	pass
+	num_binary = hexadecimal_to_binary(num_hexadecimal)
+
+	num_octal = binary_to_octal(num_binary)
+
+	return num_octal
+
 
 '''
 	Convierte un numero del sistema decimal al sistema binario
@@ -153,6 +126,67 @@ def decimal_to_binary(num_decimal):
 
 	return binary[::-1]
 
+
+'''
+	Convierte un numero del sistema hexadecimal al sistema binario
+	@param num_hexadecimal
+		Numero del sistema hexadecimal que convertiremos a numero del sistema binario
+	@return
+		La representacion de num_hexadecimal en el sistema binario
+'''
+def hexadecimal_to_binary(num_hexadecimal):
+	binary = ""
+	aDictionary = {"A": "1010", "B": "1011", "C": "1100", "D": "1101", "E": "1110", "F": "1111"}
+
+	aux = num_hexadecimal.upper()
+
+	for num in aux:
+		if (num in aDictionary.keys()):
+			binary += aDictionary.get(num)
+		else:
+			a_binary = decimal_to_binary(int(num))
+			while len(a_binary) != 4:
+				a_binary = "0" + a_binary
+			binary += a_binary
+
+	return binary
+
+
+'''
+	Convierte un numero del sistema binario al sistema octal
+	@param num_binary
+		Numero del sistema binario que convertiremos a numero del sistema octal
+	@return
+		La representacion de num_binary en el sistema octal
+'''
+def binary_to_octal(num_binary):
+	r_binary = num_binary[::-1]
+
+	octal_number = ""
+
+	aux_list = []
+
+	for number in r_binary:
+		if (len(aux_list) == 3):
+			octal = int(aux_list[0]) * 4
+			octal += int(aux_list[1]) * 2
+			octal += int(aux_list[2]) * 1
+			octal_number = str(octal) + octal_number
+			aux_list = [number]
+		else:
+			aux_list.insert(0, number)
+
+	if(aux_list != []):
+		while len(aux_list) != 3:
+			aux_list.insert(0, "0")
+		octal = int(aux_list[0]) * 4
+		octal += int(aux_list[1]) * 2
+		octal += int(aux_list[2]) * 1
+		octal_number = str(octal) + octal_number
+
+	return int(octal_number)
+
+
 '''
 	Excepcion que se utiliza para identificar los numeros que no corresponden al sistema
 	deseado
@@ -164,7 +198,7 @@ if __name__ == '__main__':
 	
 	sOptions = "\nWhat do you want do?"
 	sOptions += "\n   1.- Convert octal to decimal number"
-	sOptions += "\n   2.- Convert decimal to ocatal number"
+	sOptions += "\n   2.- Convert decimal to octal number"
 	sOptions += "\n   3.- Convert octal to hexadecimal number"
 	sOptions += "\n   4.- Convert hexadecimal to octal number"
 	sOptions += "\n   0.- Exit\n"
@@ -202,7 +236,13 @@ if __name__ == '__main__':
 				print("Invalid param, try again")
 
 		elif (option == 4):
-			pass
+			try:
+				param = input("Tell me a number to convert: ")
+				num_octal = hexadecimal_to_octal(param)
+				print(param + " in the octal system is: " + str(num_octal))
+			except:
+				print("Invalid param, try again")
+
 		elif (option == 0):
 			break
 		else:
