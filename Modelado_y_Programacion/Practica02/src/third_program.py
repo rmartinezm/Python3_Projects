@@ -48,7 +48,7 @@ if __name__ == '__main__':
 	print(tshirts)
 	print("Pantalones:")
 	print(pants)
-	print("Zapatos")
+	print("Zapatos:")
 	print(shoes)
 	print("\nLLamamos a la función ropero con estas listas\n")
 
