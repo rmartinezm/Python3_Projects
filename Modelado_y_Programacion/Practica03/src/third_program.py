@@ -2,7 +2,7 @@
 	@author 
 		Roberto Martínez Medina
 	@github 
-		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica03/third_program.py
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica03/src/third_program.py
 
 	Crea la clase Especie, de ella deberán heredar las clases Herbı́voro y Carnı́voro.
 

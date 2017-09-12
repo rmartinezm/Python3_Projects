@@ -2,7 +2,7 @@
 	@author 
 		Roberto Martínez Medina
 	@github 
-		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica02/fifth_program.py
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica02/src/fifth_program.py
 
 	Escribe una función que implemente el algoritmo de búsqueda binaria
 

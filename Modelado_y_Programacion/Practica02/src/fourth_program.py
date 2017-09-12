@@ -2,7 +2,7 @@
 	@author 
 		Roberto Martínez Medina
 	@github 
-		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica02/fourth_program.py
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica02/src/fourth_program.py
 
 	Escribe un función que reciba dos arreglos ordenados A1 y A2 y regrese
 	un arreglo B que contenga todos los elementos de A1 y A2 y que también

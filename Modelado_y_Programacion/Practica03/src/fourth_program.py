@@ -2,7 +2,7 @@
 	@author 
 		Roberto Martínez Medina
 	@github 
-		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica03/fourth_program.py
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica03/src/fourth_program.py
 
 	Crea un archivo de excel con las siguientes columnas:
 	

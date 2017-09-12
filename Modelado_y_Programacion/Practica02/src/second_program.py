@@ -2,7 +2,7 @@
 	@author 
 		Roberto Martínez Medina
 	@github 
-		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica02/second_program.py
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica02/src/second_program.py
 
 	Implementar el algoritmo de ordenamiento Insertion Sort
 
