@@ -2,7 +2,7 @@
 	@author 
 		Roberto Martínez Medina
 	@github 
-		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica04/src/first_program.py
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica04/src/practice_4.py
 
 	Artimética de primaria
 	A los niños les enseñan a sumar números de varias cifras de derecha a izquierda, sumando una cifra cada
@@ -43,16 +43,42 @@ def printCarryOperations(number_one, number_two):
 	number_a = str(number_one)
 	number_b = str(number_two)
 
+	carryOperations = 0
+
+	# Hacemos que ambos tengan la misma longitud
 	while (len(number_a) > len(number_b)):
 		number_b = "0" + number_b
 	while (len(number_b) > len(number_a)):
 		number_a = "0" + number_a
 
-	print(number_a)
-	print(number_b)
+	number_length = len(number_a)
+	i = 1
 
-	return "a String"
+	while 1:
+		if (i > number_length):
+			break
+		aux_a = int(number_a[(-i):])
+		aux_b = int(number_b[(-i):])
+		equal = aux_a + aux_b
 
+		base_10 = "1" + ("0" * i)
+		if (equal >= int(base_10)):
+			carryOperations += 1
+		i += 1
+
+	# Creamos la cadena dependiendo de la cantidad de operaciones de arrastre encontradas
+	sCarriyOperations = "No" if carryOperations == 0 else str(carryOperations)
+	sCarriyOperations += " carry " + ("operations." if carryOperations > 1 else "operation.") 
+	return sCarriyOperations
+
+"""
+	Escribe en el archivo que recibe como parametro una línea con el formato deseado si la línea que se
+	recibe como parametro es válida, escribe 'Invalid param' si no lo es
+	@param output_file
+		Archivo en el que se escribe la línea con el formato
+	@param line
+		Línea que se verifica sea correcta para poder trabajar con ella y escribir en el output_file
+"""
 def writeALine(output_file, line):
 	numbers = line.split(" ")
 	to_write = ""
@@ -99,10 +125,11 @@ if __name__ == '__main__':
 		print("Introduce todas las parejas de enteros que desees, cuando termines coloca un par de ceros así: 0 0")
 		while 1:
 			line = input()
-			if (line == "0 0"):
+			if (str(line).strip() == "0 0"):
 				break
 			writeALine(output_file, line)
 
+		print("Se ha creado el archivo salida.txt con la salida de éstos parametros")
 		output_file.close()
 	else:
 		file_name = input("\nDime el nombre de tu archivo (Ejemplo: entradaR1.txt)\n")
@@ -118,9 +145,10 @@ if __name__ == '__main__':
 
 		# Verificamos cada línea del archivo para ver si es válida
 		for line in input_file:
-			if (line == "0 0"):
+			if (str(line).strip() == "0 0"):
 				break
 			writeALine(output_file, line)
+		print("Se ha creado el archivo salida_" + file_name +" con la salida del archivo " + file_name)
 
 		input_file.close()
 		output_file.close()
