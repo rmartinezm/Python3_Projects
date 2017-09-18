@@ -31,8 +31,20 @@ class Database(object):
 	def correct_password(self, user_name, password):
 		return (self.database[user_name]).get_password() == password
 
+	"""
+		Regresa el objeto Usuario que tenga el mismo nombre de usuario del que se recibe como parametro.
+		@param user_name
+			El nombre de usuario que buscamos.
+		@return 
+			El usuario con ese mismo nombre de usuario.
+			None si el usuario no está en la base de datos.
+	"""
 	def get_user(self, user_name):
-		return self.database[user_name]
+		try:
+			user = self.database[user_name]
+			return user
+		except:
+			return None
 
 	"""
 		Agrega un nuevo usuario a la base de datos
