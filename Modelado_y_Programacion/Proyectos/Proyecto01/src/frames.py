@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
 from database import * 
+import time
+import os 
 
 """
 	Proyect_One
@@ -23,16 +25,29 @@ class Proyect_One(tk.Frame):
 		Organiza los elementos dentro de nuestro Frame
 	"""
 	def create_widgets(self):
-		self.register = tk.Button(self, height = 5, width = 50)
-		self.register["text"] = "Registrar Jugador"
-		self.register["command"] = self.method_register
-		self.register.pack(side="top")
+		main_frame = tk.Frame(self, bg="#BED6EF")
+		main_frame.pack()
 
-		self.login = tk.Button(self, height = 5, width = 50)
-		self.login["text"] = "Iniciar Sesión"
-		self.login["command"] = self.method_login
+		# Obtenemos la ruta a nuestra imagen de inicio
+		self.dir_path = os.path.dirname(os.path.realpath(__file__))
+		self.dir_path += "/Images/rem_background.png"
+
+		rem_image = tk.PhotoImage(master=self, file=self.dir_path)
+		self.background_image = tk.Label(main_frame, bg="#BED6EF", image=rem_image, height=600, width=300)
+		self.background_image.image = rem_image
+		self.background_image.bg = "#BED6EF"
+		self.background_image.pack(side="right")
+
+		self.options_frame = tk.Frame(main_frame, bg="#BED6EF", width=650)
+		self.label_info = tk.Label(self.options_frame, text="Inicia sesión\no\ncrea una cuenta\npara ingresar a\n¡REM-MEMORAMA!\n", bg="#BED6EF", font=("Courier", 20))
+		self.label_info.pack()
+		self.register = tk.Button(self.options_frame, text="Registrar Jugador", command=self.method_register, height=4, width=50)
+		self.register.pack()
+		self.login = tk.Button(self.options_frame, text="Iniciar Sesión", command=self.method_login, height=4, width=50)
 		self.login["fg"] = "#00820e"
 		self.login.pack()
+		self.options_frame.pack(side="left")
+		
 
 	"""
 		Inicia un Register_Frame
@@ -40,7 +55,7 @@ class Proyect_One(tk.Frame):
 	def method_register(self):
 		aTK = tk.Tk()
 		# Instanciamos el Frame
-		new_register = SignUp_Frame(master=aTK)
+		new_register = SignUp_Frame(master=aTK, frames_to_close=[self])
 		# Colocamos el título de nuestro Frame
 		new_register.master.title("Crear Cuenta")
 		# Con estos métodos obligamos a que la ventana no pueda cambiar sus dimensiones
@@ -55,7 +70,7 @@ class Proyect_One(tk.Frame):
 	def method_login(self):
 		aTK = tk.Tk()
 		# Instanciamos el Frame
-		new_login = Login_Frame(master=aTK)
+		new_login = Login_Frame(master=aTK, frames_to_close=[self])
 		# Colocamos el título de nuestro Frame
 		new_login.master.title("Iniciar Sesión")
 		# Con estos métodos obligamos a que la ventana no pueda cambiar sus dimensiones
@@ -71,9 +86,12 @@ class SignUp_Frame(tk.Frame):
 
 	"""
 		Constructor
+		@param frame
+			Frames que tendremos que cerrar en cuanto el Menu_Frame inicie
 	"""
-	def __init__(self, master=None):
+	def __init__(self, master=None, frames_to_close=[]):
 		super(SignUp_Frame, self).__init__(master)
+		self.frames_to_close = frames_to_close
 		self.pack()
 		self.create_widgets()
 
@@ -108,6 +126,11 @@ class SignUp_Frame(tk.Frame):
 		self.enter_btn["command"] = self.sign_up
 		self.enter_btn.pack()
 
+	"""
+		Verifica los campos para ver si son válidos y dar de alta un usuario.
+		Si todos los datos son correctos se abre automaticamente la ventana del menú principal.
+		Si los datos no son correctos se muestra el mensaje de error correspondiente
+	"""
 	def sign_up(self):
 		user_name = self.user_name_entry.get()
 		password = self.password_entry.get()
@@ -125,7 +148,14 @@ class SignUp_Frame(tk.Frame):
 			database = Database()
 			try:
 				database.new_user(user_name, password)
-				print("sign_up")
+				#Si el registro fue éxitoso ingresaremos a la pantalla principal
+				user = database.get_user(user_name)
+				messagebox.showinfo("Éxito", "Cuenta creada con éxito")
+				aTK = tk.Tk()
+				self.frames_to_close.append(self)
+				menu_frame = Menu_Frame(aTK, frames_to_close=self.frames_to_close, user=user)
+				menu_frame.master.title("Bienvenido a ¡Rem-Memorama!")
+				menu_frame.mainloop()
 			except UserAlreadyExists:
 				self.show_error(message="El nombre de usuario ya ha sido registrado, intenta otro.")
 
@@ -152,8 +182,9 @@ class Login_Frame(tk.Frame):
 	"""
 		Constructor
 	"""
-	def __init__(self, master=None):
+	def __init__(self, master=None, frames_to_close=[]):
 		super(Login_Frame, self).__init__(master)
+		self.frames_to_close = frames_to_close
 		self.pack()
 		self.create_widgets()
 
@@ -187,10 +218,14 @@ class Login_Frame(tk.Frame):
 		en caso contrario se mostrará una ventana de error.
 	"""
 	def login(self):
-		user_name = (self.user_name_entry.get()).strip()
-		password = (self.password_entry.get()).strip()
+		user_name = self.user_name_entry.get()
+		password = self.password_entry.get()
 
-		if (user_name == "" or password == ""):
+		if (" " in user_name):
+			self.show_error(message="Tu nombre de usuario no puede tener espacios en blanco.")
+		elif (" " in password):
+			self.show_error(message="Tu contraseña no puede tener espacios en blanco.")
+		elif (user_name == "" or password == ""):
 			self.show_error(message="Favor de introducir todos los campos")
 		else:
 			database = Database()
@@ -200,7 +235,13 @@ class Login_Frame(tk.Frame):
 				self.show_error(title="Contraseña", message="Contraseña incorrecta")
 			else:
 				user = database.get_user(user_name)
-				print("Login succefull")
+				aTK = tk.Tk()
+				self.frames_to_close.append(self)
+				menu_frame = Menu_Frame(aTK, frames_to_close=self.frames_to_close, user=user)
+				menu_frame.master.title("Bienvenido a ¡Rem-Memorama!")
+				menu_frame.master.maxsize(680, 480)
+				menu_frame.master.minsize(680, 480)
+				menu_frame.mainloop()
 
 	"""
 		Muestra un error
@@ -211,3 +252,111 @@ class Login_Frame(tk.Frame):
 	"""
 	def show_error(self, title="Error", message="Error"):
 		messagebox.showerror(title, message)
+
+
+"""
+	Menú principal del programa.
+	En éste frame existen las opciones para iniciar un juego nuevo, para ver las estadísticas y para poder borrar su historial
+"""
+class Menu_Frame(tk.Frame):
+
+	"""
+		Constructor
+		@param frames
+			Lista que contiene los Frames que tendremos que cerrar cuando inicie éste menú
+	"""
+	def __init__(self, master=None, frames_to_close=[], user=None):
+		super(Menu_Frame, self).__init__(master)
+		for frame in frames_to_close:
+			frame.master.destroy()
+		self.user = user
+		self.pack()
+		self.create_widgets()
+
+	""" 
+		Organiza los elementos dentro de nuestro Frame
+	"""
+	def create_widgets(self):
+		self.main_frame = tk.Frame(self, bg="#ffffff")
+		self.main_frame.pack()
+
+		# GIF
+		######################################################################################
+		# Obtenemos la ruta a nuestro gif de inicio
+		self.dir_path = os.path.dirname(os.path.realpath(__file__))
+		self.dir_path += "/Images/rem.gif"
+		# Iniciamos la animacion de nuestro gif
+		self.rem_gif = tk.PhotoImage(master=self, file=self.dir_path, format="gif -index 1")
+		self.label_gif = tk.Label(self.main_frame, image=self.rem_gif)
+		self.label_gif.image = self.rem_gif
+		self.label_gif.pack(side="left")
+		self.run_animation()
+		######################################################################################
+		# Menu
+		self.options_frame = tk.Frame(self.main_frame, bg="#ffffff")
+		self.label_title = tk.Label(self.options_frame, bg="#ffffff", text="REM\n¡MEMORAMA!", font=("Courier", 44))
+		self.label_title.pack()
+		self.play_btn = tk.Button(self.options_frame, text="Jugar", command=self.play, bd=5, font=("Arial", 20), height=2, width=50)
+		self.play_btn.pack()
+		self.statistics_btn = tk.Button(self.options_frame, text="Estadísticas", bd=5, font=("Arial", 20), command=self.estadistics, height=2, width=50)
+		self.statistics_btn.pack()
+		self.clear_btn = tk.Button(self.options_frame, text="Borrar historial", bd=5, font=("Arial", 20), command=self.clear, height=2, width=50)
+		self.clear_btn.pack()
+		self.options_frame.pack(side="right")
+
+	def play(self): pass
+
+	def estadistics(self):
+		aTK = tk.Tk()
+		estadistics_frame = Estadistics_Frame(aTK, user=self.user)
+		estadistics_frame.master.title("Estadísticas")
+		estadistics_frame.master.maxsize(330, 400)
+		estadistics_frame.master.minsize(330, 400)
+		estadistics_frame.mainloop()
+
+	def clear(self): pass
+
+	"""
+		Guardamos en frames todas las imagenes que tiene nuestro gif
+	"""
+	def run_animation(self):
+		self.frames = [tk.PhotoImage(master=self, file=self.dir_path, format="gif -index {}".format(i)) for i in range(26)]
+		self.label_gif.after(0, self.change_image, 0)
+
+	"""
+		Cambiamos la imagen de nuestro gif cada 80 miliseguntos para tener continuidad en nuestro gif
+	"""
+	def change_image(self, index_frame):
+		# 26 son el número de frames de nuestro gif, cuando llegue a ese punto reiniciamos las imagenes
+		if (index_frame != 26):
+			self.rem_gif = self.frames[index_frame]
+			self.label_gif.config(image=self.rem_gif)
+			self.label_gif.image = self.rem_gif
+			self.label_gif.pack(side="left")
+			index_frame += 1
+			self.label_gif.after(50, self.change_image, index_frame)
+		else:
+			self.label_gif.after(0, self.change_image, 0)
+
+class Estadistics_Frame(tk.Frame):
+
+	def __init__(self, master=None, user=None):
+		super(Estadistics_Frame, self).__init__(master)
+		self.user = user
+		self.pack()
+		self.create_widgets()
+
+	def create_widgets(self):
+		self.label_user_name = tk.Label(master=self, text=self.user.get_user_name(), font=("Courier", 30), height=2, width=25) 
+		self.label_user_name.pack()
+		self.label_total_games = tk.Label(master=self, text="Juegos totales: {}".format(self.user.get_total_games()), font=("Arial", 12), height=4, width=25) 
+		self.label_total_games.pack()
+		self.label_games_won = tk.Label(master=self, text="Juegos ganados: {}".format(self.user.get_games_won()), font=("Arial", 12), height=4, width=30) 
+		self.label_games_won.pack()
+		self.label_games_lost = tk.Label(master=self, text="Juegos perdidos: {}".format(self.user.get_games_lost()), font=("Arial", 12), height=4, width=30) 
+		self.label_games_lost.pack()
+		self.btn_close = tk.Button(master=self, text="OK", command=self.close, fg="red", height=2, width=20)
+		self.btn_close.pack()
+
+	def close(self):
+		self.master.destroy()

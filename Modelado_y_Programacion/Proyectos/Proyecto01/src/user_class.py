@@ -35,3 +35,12 @@ class User(object):
 	"""
 	def get_user_name(self):
 		return self.user_name
+
+	def get_total_games(self):
+		return self.total_games
+
+	def get_games_won(self):
+		return self.games_won
+
+	def get_games_lost(self):
+		return self.games_lost
