@@ -2,7 +2,7 @@
 	@author 
 		Roberto Martínez Medina
 	@github 
-		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica03/src/second_program.py
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practicas/Practica03/src/second_program.py
 
 	Crea la clase llamada Fruta, una fruta debe tener tamaño (grande, mediana, pequeña) y color.
 

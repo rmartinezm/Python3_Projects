@@ -2,7 +2,7 @@
 	@author 
 		Roberto Martínez Medina
 	@github 
-		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica03/src/first_program.py
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practicas/Practica03/src/first_program.py
 
 	Crea una clase llamada Videojuego, un videojuego tiene: nombre, género, precio y desarrollador.
 	Realiza lo siguiente: Crea un constructor que inicialice los atributos anteriores, asegúrate de evitar

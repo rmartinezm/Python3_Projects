@@ -1,6 +1,14 @@
+"""
+	@author 
+		Roberto Martínez Medina
+	@github 
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Proyectos/Proyecto01/src/menu_frames.py
+"""
+
 import tkinter as tk
 from tkinter import messagebox
 from database import * 
+from game import *
 import time
 import os 
 
@@ -80,7 +88,11 @@ class Proyect_One(tk.Frame):
 		new_login.mainloop()
 
 """
-
+	SignUp_Frame
+	Clase hija de Frame, con la cual organizamos los elementos que se mostrarán al usuario
+	para que pueda crear una cuenta en nuestro programa.
+	Con SignUp_Frame se muestran tres campos para ingresasr el nombre de usuario, la contraseña
+	y confirmación de contraseña para así poder crear la cuenta.
 """
 class SignUp_Frame(tk.Frame):
 
@@ -155,6 +167,8 @@ class SignUp_Frame(tk.Frame):
 				self.frames_to_close.append(self)
 				menu_frame = Menu_Frame(aTK, frames_to_close=self.frames_to_close, user=user)
 				menu_frame.master.title("Bienvenido a ¡Rem-Memorama!")
+				menu_frame.master.maxsize(680, 480)
+				menu_frame.master.minsize(680, 480)
 				menu_frame.mainloop()
 			except UserAlreadyExists:
 				self.show_error(message="El nombre de usuario ya ha sido registrado, intenta otro.")
@@ -304,8 +318,23 @@ class Menu_Frame(tk.Frame):
 		self.clear_btn.pack()
 		self.options_frame.pack(side="right")
 
-	def play(self): pass
 
+	"""
+		Se ejecuta cuando se preciona el botón de JUGAR.
+		Inicia un Game_Frame
+	"""
+	def play(self): 
+		aTK = tk.Tk()
+		game_frame = Game_Frame(aTK, user=self.user)
+		game_frame.master.title("¡REM-MEMORAMA!")
+		game_frame.master.maxsize(600, 400)
+		game_frame.master.minsize(600, 400)
+		game_frame.mainloop()
+
+	"""
+		Se ejecuta cuando se preciona el botón de ESTADÍSTICAS.
+		Inicia un Estadistics_Frame
+	"""
 	def estadistics(self):
 		aTK = tk.Tk()
 		estadistics_frame = Estadistics_Frame(aTK, user=self.user)
@@ -314,7 +343,19 @@ class Menu_Frame(tk.Frame):
 		estadistics_frame.master.minsize(330, 400)
 		estadistics_frame.mainloop()
 
-	def clear(self): pass
+
+	"""
+		Se ejecuta cuando se preciona el botón de BORRAR HISTORIAL.
+		Inicia un Clear_Frame
+	"""
+	def clear(self): 
+		aTK = tk.Tk()
+		clear_frame = Clear_Frame(aTK, user=self.user)
+		clear_frame.master.title("Borrar historial")
+		clear_frame.master.maxsize(400, 100)
+		clear_frame.master.minsize(400, 100)
+		clear_frame.mainloop()
+
 
 	"""
 		Guardamos en frames todas las imagenes que tiene nuestro gif
@@ -322,6 +363,7 @@ class Menu_Frame(tk.Frame):
 	def run_animation(self):
 		self.frames = [tk.PhotoImage(master=self, file=self.dir_path, format="gif -index {}".format(i)) for i in range(26)]
 		self.label_gif.after(0, self.change_image, 0)
+
 
 	"""
 		Cambiamos la imagen de nuestro gif cada 80 miliseguntos para tener continuidad en nuestro gif
@@ -338,14 +380,22 @@ class Menu_Frame(tk.Frame):
 		else:
 			self.label_gif.after(0, self.change_image, 0)
 
+
+
 class Estadistics_Frame(tk.Frame):
 
+	"""
+		Constructor
+	"""
 	def __init__(self, master=None, user=None):
 		super(Estadistics_Frame, self).__init__(master)
 		self.user = user
 		self.pack()
 		self.create_widgets()
 
+	"""
+		Organiza los elementos dentro de nuestro Frame
+	"""
 	def create_widgets(self):
 		self.label_user_name = tk.Label(master=self, text=self.user.get_user_name(), font=("Courier", 30), height=2, width=25) 
 		self.label_user_name.pack()
@@ -358,5 +408,50 @@ class Estadistics_Frame(tk.Frame):
 		self.btn_close = tk.Button(master=self, text="OK", command=self.close, fg="red", height=2, width=20)
 		self.btn_close.pack()
 
+	"""
+		Cierra éste Frame
+	"""
+	def close(self):
+		self.master.destroy()
+
+
+
+class Clear_Frame(tk.Frame):
+
+	"""
+		Constructor
+	"""
+	def __init__(self, master=None, user=None):
+		super(Clear_Frame, self).__init__(master)
+		self.user = user
+		self.pack()
+		self.create_widgets()
+
+	"""
+		Organiza los elementos dentro de nuestro Frame
+	"""
+	def create_widgets(self):
+		self.label_info = tk.Label(master=self, text="¿Seguro quieres borrar tu historial?", font=("Arial", 14), height=2, width=80)
+		self.label_info.pack()
+		self.aFrame = tk.Frame(master=self)
+		self.ok_btn = tk.Button(self.aFrame, text="Sí, borrar.", command=self.clear, width=12, fg="green")
+		self.ok_btn.pack(side="left")
+		self.cancel_btn = tk.Button(self.aFrame, text="Cancelar.", command=self.close, width=12, fg="red")
+		self.cancel_btn.pack(side="right")
+		self.aFrame.pack()
+
+	"""
+		Reinicia las estadísticas de juego y lo actualiza en la base de datos
+	"""
+	def clear(self):
+		aDatabase = Database()
+		self.user.reset()
+		aDatabase.update_user(self.user)
+		messagebox.showinfo("Completado", "Historial borrado")
+		self.close()
+
+	"""
+		Cierra éste Frame
+	"""
 	def close(self):
 		self.master.destroy()

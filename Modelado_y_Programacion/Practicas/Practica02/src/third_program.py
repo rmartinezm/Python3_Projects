@@ -2,7 +2,7 @@
 	@author 
 		Roberto Martínez Medina
 	@github 
-		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica02/src/third_program.py
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practicas/Practica02/src/third_program.py
 
 	Escribe una función que se llame ropero tal que reciba como parámetros 3
 	listas; una de camisetas, otra de pantalones y una de zapatos, la función

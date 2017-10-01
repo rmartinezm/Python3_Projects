@@ -2,7 +2,8 @@
 	@author 
 		Roberto Martínez Medina
 	@github 
-		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica02/src/sixth_program.py
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practicas/Practica02/src/sixth_program.py
+
 
 	Escribe una función que se llame gusanito que reciba un entero k e imprima
 	en pantalla una figura compuesta con k asteriscos y entre cada asterisco

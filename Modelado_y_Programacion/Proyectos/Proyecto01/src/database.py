@@ -1,10 +1,17 @@
+"""
+	@author 
+		Roberto Martínez Medina
+	@github 
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Proyectos/Proyecto01/src/database.py
+"""
+
 import shelve
 from user_class import User
 
 class Database(object):
 
-	def __init__(self, file_name="default_database"):
-		self.database = shelve.open(file_name)
+	def __init__(self):
+		self.database = shelve.open("default_database")
 
 	"""
 		Nos indica si existe un usuario con el nombre que se recibe como parametro
@@ -61,6 +68,14 @@ class Database(object):
 		else:
 			user = User(user_name, password)
 			self.database[user_name] = user
+
+	"""
+		Actualiza un usuario en la base de datos
+		@param user
+			Usuario que actualizaremos
+	"""
+	def update_user(self, user):
+		self.database[user.get_user_name()] = user
 
 """
 	Exception para indicar que un usuario ya existe en la base de datos

@@ -2,7 +2,7 @@
 	@author 
 		Roberto Martínez Medina
 	@github 
-		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practica04/src/practice_4.py
+		https://github.com/rmartinezm/Python3_Projects/blob/master/Modelado_y_Programacion/Practicas/Practica04/src/practice_4.py
 
 	Artimética de primaria
 	A los niños les enseñan a sumar números de varias cifras de derecha a izquierda, sumando una cifra cada
